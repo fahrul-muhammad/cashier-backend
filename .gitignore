@@ -2,6 +2,8 @@
 .env
 .env.*
 
+database.json
+
 # Node modules
 node_modules/
 
