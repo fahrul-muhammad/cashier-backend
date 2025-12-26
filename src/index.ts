@@ -1,15 +1,6 @@
-import app from "./app";
 require("dotenv").config();
+import app from "./app";
 
-app.listen(process.env.port, () => {
+app.listen(process.env.PORT, () => {
   console.log(`Server running on http://localhost:${process.env.PORT}`);
 });
-
-// (async () => {
-//   try {
-//     const result = await pool.query('SELECT * FROM cashier."product";');
-//     console.log("DB connected. Data product:", result.rows);
-//   } catch (error) {
-//     console.error("DB connection failed:", error);
-//   }
-// })();
