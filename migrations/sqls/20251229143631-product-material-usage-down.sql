@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS cashier."product_material_usage";
