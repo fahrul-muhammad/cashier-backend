@@ -8,6 +8,6 @@ export function productRoute(pool: Pool, route: IRouter) {
   const productCtrl = new ProductController(productRepo);
 
   route.get("/", productCtrl.getAllProduct);
+  route.post("/post", productCtrl.createProduct);
   return route;
 }
-
