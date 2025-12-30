@@ -1,5 +1,5 @@
 import express from "express";
-import { pool } from "../db";
+import { pool } from "../config/db";
 import { productRoute } from "./product.route";
 
 const route = express.Router();

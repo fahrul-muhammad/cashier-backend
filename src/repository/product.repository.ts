@@ -26,7 +26,7 @@ class ProductRepository {
       VALUES ($1, $2, $3)
       RETURNING *;
     `;
-      const values = [body.product_name, body.selling_price, body.product_image];
+      const values = [body.product_name, body.selling_price, body.product_image ?? null];
       const result = await this.connection.query(query, values);
       return result.rows[0];
     } catch (error) {

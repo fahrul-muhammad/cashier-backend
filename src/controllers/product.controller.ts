@@ -21,8 +21,11 @@ class ProductController {
   createProduct = async (req: Request, res: Response): Promise<any> => {
     try {
       const reqBody = req.body;
+      if (req.file) {
+        reqBody.product_image = `/uploads/${req.file.filename}`;
+      }
       const result = await this.productRepository.addProduct(reqBody);
-      return sendResponse(res, 200, result);
+      return sendResponse(res, 201, result);
     } catch (error) {
       throw error;
     }
