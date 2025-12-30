@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import ProductRepository from "../repository/product.repository";
 import { sendResponse } from "../helpers/standardResponse.helper";
+import ProductRepository from "../repository/product.repository";
 
 class ProductController {
   productRepository: ProductRepository;
@@ -13,6 +13,19 @@ class ProductController {
     try {
       const results = await this.productRepository.getAllProduct();
       return sendResponse(res, 200, results);
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  createProduct = async (req: Request, res: Response): Promise<any> => {
+    try {
+      const reqBody = req.body;
+      if (req.file) {
+        reqBody.product_image = `/uploads/${req.file.filename}`;
+      }
+      const result = await this.productRepository.addProduct(reqBody);
+      return sendResponse(res, 201, result);
     } catch (error) {
       throw error;
     }
