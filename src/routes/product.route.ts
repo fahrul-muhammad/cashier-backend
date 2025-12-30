@@ -10,3 +10,4 @@ export function productRoute(pool: Pool, route: IRouter) {
   route.get("/", productCtrl.getAllProduct);
   return route;
 }
+
