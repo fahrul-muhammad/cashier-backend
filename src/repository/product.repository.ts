@@ -8,17 +8,17 @@ class ProductRepository {
     this.connection = connection;
   }
 
-  getAllProduct = async (): Promise<any> => {
+  getAllProduct = async (): Promise<Product[]> => {
     try {
       const query = await this.connection.query("SELECT * FROM cashier.product;");
       const result = query.rows;
-      return result;
+      return result as Product[];
     } catch (error) {
       throw error;
     }
   };
 
-  addProduct = async (body: Product): Promise<any> => {
+  addProduct = async (body: Product): Promise<Product> => {
     try {
       const query = `
       INSERT INTO cashier.product 
@@ -28,7 +28,7 @@ class ProductRepository {
     `;
       const values = [body.product_name, body.selling_price, body.product_image ?? null];
       const result = await this.connection.query(query, values);
-      return result.rows[0];
+      return result.rows[0] as Product;
     } catch (error) {
       throw error;
     }

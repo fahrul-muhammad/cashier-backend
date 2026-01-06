@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { sendResponse } from "../helpers/standardResponse.helper";
+import { Product } from "../models/product.model";
 import ProductRepository from "../repository/product.repository";
 
 class ProductController {
@@ -9,23 +10,23 @@ class ProductController {
     this.productRepository = productRepo;
   }
 
-  getAllProduct = async (req: Request, res: Response): Promise<any> => {
+  getAllProduct = async (req: Request, res: Response): Promise<void> => {
     try {
       const results = await this.productRepository.getAllProduct();
-      return sendResponse(res, 200, results);
+      sendResponse<Product[]>(res, 200, results);
     } catch (error) {
       throw error;
     }
   };
 
-  createProduct = async (req: Request, res: Response): Promise<any> => {
+  createProduct = async (req: Request, res: Response): Promise<void> => {
     try {
       const reqBody = req.body;
       if (req.file) {
         reqBody.product_image = `/uploads/${req.file.filename}`;
       }
       const result = await this.productRepository.addProduct(reqBody);
-      return sendResponse(res, 201, result);
+      sendResponse(res, 201, result);
     } catch (error) {
       throw error;
     }
