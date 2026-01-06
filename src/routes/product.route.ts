@@ -10,6 +10,10 @@ export function productRoute(pool: Pool, route: IRouter) {
 
   route.get("/", productCtrl.getAllProduct);
   route.post("/post", uploadProductImage.single("product_image"), productCtrl.createProduct);
+  route.patch("/delete/:id", productCtrl.archiveProduct);
+  route.patch("/restore/:id", productCtrl.restoreProduct);
+  route.get("/detail/:id", productCtrl.getProductById);
+  route.patch("/update/:id", uploadProductImage.single("product_image"), productCtrl.updateProduct);
 
   return route;
 }
