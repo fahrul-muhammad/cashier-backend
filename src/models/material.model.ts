@@ -1,7 +1,6 @@
 export interface Material {
   id: string;
   name: string;
-  baseUnit: string;
+  base_unit: string;
   created_at: string;
-  is_active?: boolean;
 }

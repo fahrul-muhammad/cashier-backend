@@ -5,8 +5,8 @@ import MaterialRepository from "../repository/material.repository";
 
 export function materialRoute(pool: Pool, route: IRouter) {
   const materialRepo = new MaterialRepository(pool);
-    const materialCtrl = new MaterialController(materialRepo);
-    
+  const materialCtrl = new MaterialController(materialRepo);
+
   route.get("/", materialCtrl.getAllMaterial);
   route.post("/post", materialCtrl.createMaterial);
   route.get("/detail/:id", materialCtrl.getMaterialById);
