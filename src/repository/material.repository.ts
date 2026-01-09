@@ -10,9 +10,7 @@ class MaterialRepository {
 
   getAllMaterial = async (): Promise<Material[]> => {
     try {
-      const query = await this.connection.query(
-        "SELECT * FROM cashier.material WHERE is_active = true;"
-      );
+      const query = await this.connection.query("select * from cashier.material m WHERE m.is_active = true ;");
       const result = query.rows;
       return result as Material[];
     } catch (error) {
@@ -28,7 +26,7 @@ class MaterialRepository {
         VALUES ($1, $2)
         RETURNING *;
       `;
-      const values = [body.name, body.baseUnit];
+      const values = [body.name, body.base_unit];
       const result = await this.connection.query(query, values);
       return result.rows[0] as Material;
     } catch (error) {
@@ -38,8 +36,7 @@ class MaterialRepository {
 
   archiveMaterial = async (materialId: string): Promise<void> => {
     try {
-      const query =
-        "UPDATE cashier.material SET is_active = false WHERE id = $1;";
+      const query = "UPDATE cashier.material SET is_active = false WHERE id = $1;";
       const values = [materialId];
       await this.connection.query(query, values);
     } catch (error) {
@@ -49,8 +46,7 @@ class MaterialRepository {
 
   restoreMaterial = async (materialId: string): Promise<void> => {
     try {
-      const query =
-        "UPDATE cashier.material SET is_active = true WHERE id = $1;";
+      const query = "UPDATE cashier.material SET is_active = true WHERE id = $1;";
       const values = [materialId];
       await this.connection.query(query, values);
     } catch (error) {
@@ -60,8 +56,7 @@ class MaterialRepository {
 
   getMaterialById = async (materialId: string): Promise<Material | null> => {
     try {
-      const query =
-        "SELECT * FROM cashier.material WHERE id = $1 AND is_active = true;";
+      const query = "SELECT * FROM cashier.material WHERE is_active = true AND id = $1 ;";
       const values = [materialId];
       const result = await this.connection.query(query, values);
 
@@ -86,9 +81,9 @@ class MaterialRepository {
         values.push(body.name);
       }
 
-      if (body.baseUnit) {
+      if (body.base_unit) {
         fields.push(`base_unit = $${index++}`);
-        values.push(body.baseUnit);
+        values.push(body.base_unit);
       }
 
       if (fields.length === 0) {

@@ -1,94 +1,92 @@
 import { Pool } from "pg";
-import { Material } from "../models/material.model";
+import { Product } from "../models/product.model";
 
-class MaterialRepository {
+class ProductRepository {
   connection: Pool;
 
   constructor(connection: Pool) {
     this.connection = connection;
   }
 
-  getAllMaterial = async (): Promise<Material[]> => {
+  getAllProduct = async (): Promise<Product[]> => {
     try {
-      const query = await this.connection.query(
-        "SELECT * FROM cashier.material WHERE is_active = true;"
-      );
+      const query = await this.connection.query("SELECT * FROM cashier.product u WHERE u.is_active = true;");
       const result = query.rows;
-      return result as Material[];
+      return result as Product[];
     } catch (error) {
       throw error;
     }
   };
 
-  addMaterial = async (body: Material): Promise<Material> => {
+  addProduct = async (body: Product): Promise<Product> => {
     try {
       const query = `
-        INSERT INTO cashier.material
-        (name, base_unit)
-        VALUES ($1, $2)
-        RETURNING *;
-      `;
-      const values = [body.name, body.baseUnit];
+      INSERT INTO cashier.product 
+      (product_name, selling_price, product_image)
+      VALUES ($1, $2, $3)
+      RETURNING *;
+    `;
+      const values = [body.product_name, body.selling_price, body.product_image ?? null];
       const result = await this.connection.query(query, values);
-      return result.rows[0] as Material;
+      return result.rows[0] as Product;
     } catch (error) {
       throw error;
     }
   };
 
-  archiveMaterial = async (materialId: string): Promise<void> => {
+  archiveProduct = async (productId: string): Promise<void> => {
     try {
-      const query =
-        "UPDATE cashier.material SET is_active = false WHERE id = $1;";
-      const values = [materialId];
+      const query = "UPDATE cashier.product SET is_active = false WHERE id = $1;";
+      const values = [productId];
       await this.connection.query(query, values);
     } catch (error) {
       throw error;
     }
   };
 
-  restoreMaterial = async (materialId: string): Promise<void> => {
+  restoreProduct = async (productId: string): Promise<void> => {
     try {
-      const query =
-        "UPDATE cashier.material SET is_active = true WHERE id = $1;";
-      const values = [materialId];
+      const query = "UPDATE cashier.product SET is_active = true WHERE id = $1;";
+      const values = [productId];
       await this.connection.query(query, values);
     } catch (error) {
       throw error;
     }
   };
 
-  getMaterialById = async (materialId: string): Promise<Material | null> => {
+  getProductById = async (productId: string): Promise<Product | null> => {
     try {
-      const query =
-        "SELECT * FROM cashier.material WHERE id = $1 AND is_active = true;";
-      const values = [materialId];
+      const query = "SELECT * FROM cashier.product WHERE id = $1 AND is_active = true;";
+      const values = [productId];
       const result = await this.connection.query(query, values);
-
       if (result.rows.length === 0) {
         return null;
       }
-
-      return result.rows[0] as Material;
+      return result.rows[0] as Product;
     } catch (error) {
       throw error;
     }
   };
 
-  updateMaterial = async (id: string, body: any): Promise<any> => {
+  updateProduct = async (id: string, body: any): Promise<any> => {
     try {
       const fields: string[] = [];
-      const values: string[] = [];
+      const values: (string | number)[] = [];
       let index: number = 1;
 
-      if (body.name) {
-        fields.push(`name = $${index++}`);
-        values.push(body.name);
+      if (body.product_name) {
+        fields.push(`product_name = $${index++}`);
+        values.push(body.product_name);
       }
 
-      if (body.baseUnit) {
-        fields.push(`base_unit = $${index++}`);
-        values.push(body.baseUnit);
+      if (body.selling_price) {
+        fields.push(`selling_price = $${index++}`);
+        values.push(Number(body.selling_price));
+      }
+
+      if (body.product_image) {
+        fields.push(`product_image = $${index++}`);
+        values.push(body.product_image);
       }
 
       if (fields.length === 0) {
@@ -96,7 +94,7 @@ class MaterialRepository {
       }
 
       const query = `
-        UPDATE cashier.material
+        UPDATE cashier.product
         SET ${fields.join(", ")}
         WHERE id = $${index}
         RETURNING *;
@@ -112,4 +110,4 @@ class MaterialRepository {
   };
 }
 
-export default MaterialRepository;
+export default ProductRepository;
