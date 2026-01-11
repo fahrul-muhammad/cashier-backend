@@ -1,11 +1,12 @@
-import { IRouter } from "express";
+import express from "express";
 import { Pool } from "pg";
 import MaterialController from "../controllers/material.controller";
 import MaterialRepository from "../repository/material.repository";
 
-export function materialRoute(pool: Pool, route: IRouter) {
+export function materialRoute(pool: Pool) {
   const materialRepo = new MaterialRepository(pool);
   const materialCtrl = new MaterialController(materialRepo);
+  const route = express.Router();
 
   route.get("/", materialCtrl.getAllMaterial);
   route.post("/post", materialCtrl.createMaterial);
