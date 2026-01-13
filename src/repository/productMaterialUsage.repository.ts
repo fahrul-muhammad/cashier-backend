@@ -27,11 +27,7 @@ class ProductMaterialUsageRepository {
         VALUES ($1, $2, $3, $4)
         RETURNING *;
       `;
-
       const values = [body.product_id, body.material_id, body.usage_quantity, body.unit];
-
-      console.log("Values:", values);
-
       const result = await this.connection.query(query, values);
       return result.rows[0] as ProductMaterialUsage;
     } catch (error) {
