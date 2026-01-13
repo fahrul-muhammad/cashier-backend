@@ -1,21 +1,21 @@
 import { NextFunction, Request, Response } from "express";
 import { verifyToken } from "../helpers/jwt";
+import { sendResponse } from "../helpers/standardResponse.helper";
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
-    return res.status(401).json({ message: "No token" });
+    return sendResponse(res, 401, "Authorization header missing");
   }
 
   const token = authHeader.split(" ")[1];
 
   try {
     const decoded = verifyToken(token);
-    // console.log("DECODED : ", decoded);
-    // req.user = decoded;
+    req.user = decoded;
     next();
   } catch {
-    return res.status(401).json({ message: "Invalid token" });
+    return sendResponse(res, 401, "Invalid or expired token");
   }
 };
