@@ -21,9 +21,7 @@ class ProductMaterialUsageController {
 
   createProductMaterialUsage = async (req: Request, res: Response): Promise<void> => {
     try {
-      console.log("MASUK SINI di controller");
       const reqBody = req.body;
-      console.log("Request Body:", reqBody);
       const result = await this.productMaterialUsageRepository.addProductMaterialUsage(reqBody);
       sendResponse<ProductMaterialUsage>(res, 201, result);
     } catch (error) {
