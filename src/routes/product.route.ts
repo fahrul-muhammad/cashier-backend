@@ -1,12 +1,14 @@
-import { IRouter } from "express";
+import Express from "express";
 import { Pool } from "pg";
 import { uploadProductImage } from "../config/multer";
 import ProductController from "../controllers/product.controller";
 import ProductRepository from "../repository/product.repository";
 
-export function productRoute(pool: Pool, route: IRouter) {
+export function productRoute(pool: Pool) {
   const productRepo = new ProductRepository(pool);
   const productCtrl = new ProductController(productRepo);
+
+  const route = Express.Router();
 
   route.get("/", productCtrl.getAllProduct);
   route.post("/post", uploadProductImage.single("product_image"), productCtrl.createProduct);
