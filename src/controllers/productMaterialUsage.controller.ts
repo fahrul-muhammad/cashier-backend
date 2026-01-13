@@ -10,45 +10,31 @@ class ProductMaterialUsageController {
     this.productMaterialUsageRepository = productMaterialUsageRepo;
   }
 
-  getAllProductMaterialUsage = async (
-    req: Request,
-    res: Response
-  ): Promise<void> => {
+  getAllProductMaterialUsage = async (req: Request, res: Response): Promise<void> => {
     try {
-      const results =
-        await this.productMaterialUsageRepository.getAllProductMaterialUsage();
+      const results = await this.productMaterialUsageRepository.getAllProductMaterialUsage();
       sendResponse<ProductMaterialUsage[]>(res, 200, results);
     } catch (error) {
       throw error;
     }
   };
 
-  createProductMaterialUsage = async (
-    req: Request,
-    res: Response
-  ): Promise<void> => {
+  createProductMaterialUsage = async (req: Request, res: Response): Promise<void> => {
     try {
+      console.log("MASUK SINI di controller");
       const reqBody = req.body;
-      const result =
-        await this.productMaterialUsageRepository.addProductMaterialUsage(
-          reqBody
-        );
+      console.log("Request Body:", reqBody);
+      const result = await this.productMaterialUsageRepository.addProductMaterialUsage(reqBody);
       sendResponse<ProductMaterialUsage>(res, 201, result);
     } catch (error) {
       throw error;
     }
   };
 
-  getProductMaterialUsageById = async (
-    req: Request,
-    res: Response
-  ): Promise<void> => {
+  getProductMaterialUsageById = async (req: Request, res: Response): Promise<void> => {
     try {
       const usageId = req.params.id;
-      const result =
-        await this.productMaterialUsageRepository.getProductMaterialUsageById(
-          usageId
-        );
+      const result = await this.productMaterialUsageRepository.getProductMaterialUsageById(usageId);
 
       if (!result) {
         sendResponse<string>(res, 404, "Product material usage not found");
@@ -61,19 +47,12 @@ class ProductMaterialUsageController {
     }
   };
 
-  updateProductMaterialUsage = async (
-    req: Request,
-    res: Response
-  ): Promise<void> => {
+  updateProductMaterialUsage = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
       const reqBody = req.body;
 
-      const result =
-        await this.productMaterialUsageRepository.updateProductMaterialUsage(
-          id,
-          reqBody
-        );
+      const result = await this.productMaterialUsageRepository.updateProductMaterialUsage(id, reqBody);
 
       sendResponse<ProductMaterialUsage>(res, 200, result);
     } catch (error) {
@@ -81,15 +60,10 @@ class ProductMaterialUsageController {
     }
   };
 
-  deleteProductMaterialUsage = async (
-    req: Request,
-    res: Response
-  ): Promise<void> => {
+  deleteProductMaterialUsage = async (req: Request, res: Response): Promise<void> => {
     try {
       const usageId = req.params.id;
-      await this.productMaterialUsageRepository.deleteProductMaterialUsage(
-        usageId
-      );
+      await this.productMaterialUsageRepository.deleteProductMaterialUsage(usageId);
       sendResponse<string>(res, 200, "Product material usage deleted");
     } catch (error) {
       throw error;

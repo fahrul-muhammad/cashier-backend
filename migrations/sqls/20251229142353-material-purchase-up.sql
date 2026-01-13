@@ -5,7 +5,7 @@ CREATE TABLE material_purchase (
   quantity NUMERIC(12,3) NOT NULL,
   unit VARCHAR(10) NOT NULL,
   price_per_base_unit NUMERIC(12,6) NOT NULL,
-  purchase_date DATE NOT NULL,
+  purchase_date DATE NOT NULL DEFAULT NOW(),
 
   CONSTRAINT fk_material_purchase_material
     FOREIGN KEY (material_id)

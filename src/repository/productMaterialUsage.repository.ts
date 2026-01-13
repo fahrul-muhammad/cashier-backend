@@ -10,9 +10,7 @@ class ProductMaterialUsageRepository {
 
   getAllProductMaterialUsage = async (): Promise<ProductMaterialUsage[]> => {
     try {
-      const query = await this.connection.query(
-        "SELECT * FROM cashier.product_material_usage;"
-      );
+      const query = await this.connection.query("SELECT * FROM cashier.product_material_usage;");
       const result = query.rows;
       return result as ProductMaterialUsage[];
     } catch (error) {
@@ -20,10 +18,9 @@ class ProductMaterialUsageRepository {
     }
   };
 
-  addProductMaterialUsage = async (
-    body: ProductMaterialUsage
-  ): Promise<ProductMaterialUsage> => {
+  addProductMaterialUsage = async (body: ProductMaterialUsage): Promise<ProductMaterialUsage> => {
     try {
+      console.log("MASUK SINI di repository");
       const query = `
         INSERT INTO cashier.product_material_usage
         (product_id, material_id, usage_quantity, unit)
@@ -31,12 +28,9 @@ class ProductMaterialUsageRepository {
         RETURNING *;
       `;
 
-      const values = [
-        body.product_id,
-        body.material_id,
-        body.usage_quantity,
-        body.unit,
-      ];
+      const values = [body.product_id, body.material_id, body.usage_quantity, body.unit];
+
+      console.log("Values:", values);
 
       const result = await this.connection.query(query, values);
       return result.rows[0] as ProductMaterialUsage;
@@ -45,12 +39,9 @@ class ProductMaterialUsageRepository {
     }
   };
 
-  getProductMaterialUsageById = async (
-    usageId: string
-  ): Promise<ProductMaterialUsage | null> => {
+  getProductMaterialUsageById = async (usageId: string): Promise<ProductMaterialUsage | null> => {
     try {
-      const query =
-        "SELECT * FROM cashier.product_material_usage WHERE id = $1;";
+      const query = "SELECT * FROM cashier.product_material_usage WHERE id = $1;";
       const values = [usageId];
       const result = await this.connection.query(query, values);
 
@@ -64,10 +55,7 @@ class ProductMaterialUsageRepository {
     }
   };
 
-  updateProductMaterialUsage = async (
-    id: string,
-    body: any
-  ): Promise<ProductMaterialUsage> => {
+  updateProductMaterialUsage = async (id: string, body: any): Promise<ProductMaterialUsage> => {
     try {
       const fields: string[] = [];
       const values: (string | number)[] = [];

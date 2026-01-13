@@ -10,9 +10,7 @@ class MaterialPurchaseRepository {
 
   getAllMaterialPurchase = async (): Promise<MaterialPurchase[]> => {
     try {
-      const query = await this.connection.query(
-        "SELECT * FROM cashier.material_purchase;"
-      );
+      const query = await this.connection.query("SELECT * FROM cashier.material_purchase;");
       const result = query.rows;
       return result as MaterialPurchase[];
     } catch (error) {
@@ -20,25 +18,16 @@ class MaterialPurchaseRepository {
     }
   };
 
-  addMaterialPurchase = async (
-    body: MaterialPurchase
-  ): Promise<MaterialPurchase> => {
+  addMaterialPurchase = async (body: MaterialPurchase): Promise<MaterialPurchase> => {
     try {
       const query = `
         INSERT INTO cashier.material_purchase
-        (material_id, total_price, quantity, unit, price_per_base_unit, purchase_date)
-        VALUES ($1, $2, $3, $4, $5, $6)
+        (material_id, total_price, quantity, unit, price_per_base_unit)
+        VALUES ($1, $2, $3, $4, $5)
         RETURNING *;
       `;
 
-      const values = [
-        body.material_id,
-        body.total_price,
-        body.quantity,
-        body.unit,
-        body.price_per_base_unit,
-        body.purchase_date,
-      ];
+      const values = [body.material_id, body.total_price, body.quantity, body.unit, body.price_per_base_unit];
 
       const result = await this.connection.query(query, values);
       return result.rows[0] as MaterialPurchase;
@@ -47,9 +36,7 @@ class MaterialPurchaseRepository {
     }
   };
 
-  getMaterialPurchaseById = async (
-    purchaseId: string
-  ): Promise<MaterialPurchase | null> => {
+  getMaterialPurchaseById = async (purchaseId: string): Promise<MaterialPurchase | null> => {
     try {
       const query = "SELECT * FROM cashier.material_purchase WHERE id = $1;";
       const values = [purchaseId];
@@ -65,10 +52,7 @@ class MaterialPurchaseRepository {
     }
   };
 
-  updateMaterialPurchase = async (
-    id: string,
-    body: any
-  ): Promise<MaterialPurchase> => {
+  updateMaterialPurchase = async (id: string, body: any): Promise<MaterialPurchase> => {
     try {
       const fields: string[] = [];
       const values: (string | number)[] = [];
